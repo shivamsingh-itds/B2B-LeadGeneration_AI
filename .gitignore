@@ -31,4 +31,4 @@ Thumbs.db
 *.temp
 
 # SearXNG local config containing secret key
-searxng/settings.yml
+searxng/searxng-data/settings.yml

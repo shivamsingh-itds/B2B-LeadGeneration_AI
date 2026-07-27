@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+pandas
+python-dotenv
+groq
+playwright
+streamlit
+pydantic
+pypdf

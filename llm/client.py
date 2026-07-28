@@ -21,6 +21,7 @@ def get_llm_response(messages):
 
     response = client.chat.completions.create(
         # model="llama-3.3-70b-versatile",
+        # model="Llama 3.3 70B",
         model="llama-3.1-8b-instant",
         messages=messages,
         temperature=0,

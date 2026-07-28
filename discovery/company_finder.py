@@ -18,14 +18,44 @@ def discover_company_sources(industry, location, results_per_query=10):
 
         print(f"Searching: {query}")
 
-        results = search_searxng(
-            query,
-            limit=results_per_query
+        # results = search_searxng(
+        #     query,
+        #     limit=results_per_query
+        # )
+
+        # all_results.extend(results)
+        search_response = search_searxng(
+        query,
+        limit=results_per_query
         )
+
+        if not search_response["success"]:
+
+            print(
+                f"Search failed: "
+                f"{search_response['error_type']}"
+            )
+
+            # If engines are unavailable,
+            # don't keep hammering SearXNG
+            if (
+                search_response["error_type"]
+                == "SEARCH_ENGINE_UNAVAILABLE"
+            ):
+                print(
+                    "Stopping company discovery searches "
+                    "because search engines are unavailable."
+                )
+                break
+
+            continue
+
+
+        results = search_response["results"]
 
         all_results.extend(results)
 
-    return all_results
+        return all_results
 
 
 def extract_companies(search_results, industry, location):

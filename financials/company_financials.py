@@ -19,27 +19,6 @@ def get_company_revenue(
 
     print(f"\nResearching revenue: {company_name}")
 
-    # Step 1: Search financial information
-    # search_results = search_company_revenue(
-    #     company_name,
-    #     financial_year=financial_year,
-    #     results_per_query=5
-    # )
-
-    # if not search_results:
-    #     print("   No financial search results found.")
-
-    #     return {
-    #         "company_name": company_name,
-    #         "financial_year": financial_year,
-    #         "revenue": None,
-    #         "currency": None,
-    #         "unit": None,
-    #         "revenue_type": None,
-    #         "evidence": None,
-    #         "source_url": None,
-    #         "status": "Not Found"
-    #     }
     search_response = search_company_revenue(
     company_name,
     financial_year=financial_year,

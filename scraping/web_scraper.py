@@ -13,7 +13,6 @@ HEADERS = {
     )
 }
 
-
 def scrape_webpage(url):
     """
     Smart scraper.
@@ -52,7 +51,7 @@ def scrape_webpage(url):
             ""
         ).lower()
 
-        # Sometimes PDF URL doesn't end with .pdf
+        
         if "application/pdf" in content_type:
 
             print("   PDF content detected → using PDF scraper")

@@ -9,7 +9,6 @@ from financials.company_financials import (
 
 from output.exporter import export_to_csv
 
-
 def main():
 
     print("=" * 60)
@@ -59,7 +58,7 @@ def main():
         industry,
         location
     )
-    # companies = companies[:3]
+    companies = companies[:3]
 
     print(
         f"Found {len(companies)} companies.\n"

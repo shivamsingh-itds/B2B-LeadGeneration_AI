@@ -237,18 +237,6 @@ Financial Year : 2024-25
 
 ---
 
-## Example Output
-
-| Company      | Revenue           | FY      | Source            |
-| ------------ | ----------------- | ------- | ----------------- |
-| Tata Steel   | ₹218,542.51 Crore | 2024-25 | Annual Report     |
-| JSW Steel    | Revenue Found     | 2024-25 | Financial Results |
-| Jindal Steel | Revenue Found     | 2024-25 | Annual Report     |
-
-Results are exported as CSV.
-
----
-
 ## Current Capabilities
 
 * Discover companies using SearXNG

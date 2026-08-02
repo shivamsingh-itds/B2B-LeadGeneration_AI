@@ -9,32 +9,17 @@ from financials.company_financials import (
 
 from output.exporter import export_to_csv
 
-def main():
 
-    print("=" * 60)
-    print("              LeadGen AI")
-    print("=" * 60)
+def run_pipeline(
+    industry,
+    location,
+    financial_year="2024-25",
+    max_companies=3,
+):
 
-    industry = input(
-        "\nEnter industry: "
-    ).strip()
-
-    location = input(
-        "Enter location: "
-    ).strip()
-
-    financial_year = input(
-        "Enter financial year : "
-    ).strip()
-
-    if not financial_year:
-        financial_year = "2024-25"
-
-    # --------------------------------
+    # -----------------------------
     # COMPANY DISCOVERY
-    # --------------------------------
-
-    print("\n[1/4] Discovering companies...\n")
+    # -----------------------------
 
     search_results = discover_company_sources(
         industry,
@@ -42,55 +27,19 @@ def main():
         results_per_query=10
     )
 
-    print(
-        f"\nCollected {len(search_results)} "
-        f"search results."
-    )
-
-    # --------------------------------
-    # LLM COMPANY EXTRACTION
-    # --------------------------------
-
-    print("\n[2/4] Extracting company names...\n")
-
     companies = extract_companies(
         search_results,
         industry,
         location
     )
-    companies = companies[:3]
 
-    print(
-        f"Found {len(companies)} companies.\n"
-    )
-
-    for index, company in enumerate(
-        companies,
-        start=1
-    ):
-        print(
-            f"{index}. {company['company_name']}"
-        )
-
-    # --------------------------------
-    # REVENUE RESEARCH
-    # --------------------------------
-
-    print("\n[3/4] Researching company revenues...\n")
+    companies = companies[:max_companies]
 
     final_results = []
 
-    for index, company in enumerate(
-        companies,
-        start=1
-    ):
+    for company in companies:
 
         company_name = company["company_name"]
-
-        print(
-            f"\n[{index}/{len(companies)}] "
-            f"{company_name}"
-        )
 
         financial_data = get_company_revenue(
             company_name,
@@ -100,53 +49,62 @@ def main():
         financial_data["industry"] = industry
         financial_data["location"] = location
 
-        final_results.append(
-            financial_data
-        )
+        final_results.append(financial_data)
 
-    # --------------------------------
-    # EXPORT
-    # --------------------------------
+    filepath = export_to_csv(final_results)
 
-    print("\n[4/4] Exporting results...\n")
+    return {
+        "results": final_results,
+        "filepath": filepath,
+        "companies": companies
+    }
 
-    filepath = export_to_csv(
-        final_results
+
+def main():
+
+    print("=" * 60)
+    print("LeadIntel AI")
+    print("=" * 60)
+
+    industry = input("Enter industry: ").strip()
+
+    location = input("Enter location: ").strip()
+
+    financial_year = input(
+        "Enter Financial Year: "
+    ).strip()
+
+    if not financial_year:
+        financial_year = "2024-25"
+
+    output = run_pipeline(
+        industry,
+        location,
+        financial_year,
+        max_companies=3
     )
 
-    # --------------------------------
-    # SUMMARY
-    # --------------------------------
+    results = output["results"]
 
     found = sum(
         1
-        for result in final_results
-        if result["status"] == "Found"
+        for r in results
+        if r["status"] == "Found"
     )
 
-    print("=" * 60)
-
-    print("Research completed.")
+    print("\nResearch Completed\n")
 
     print(
-        f"Companies researched : "
-        f"{len(final_results)}"
+        f"Companies : {len(results)}"
     )
 
     print(
-        f"Revenue found        : {found}"
+        f"Revenue Found : {found}"
     )
 
     print(
-        f"Revenue not found    : "
-        f"{len(final_results) - found}"
+        f"CSV : {output['filepath']}"
     )
-
-    print(
-        f"CSV saved            : {filepath}"
-    )
-
-    print("=" * 60)
 
 
 if __name__ == "__main__":
